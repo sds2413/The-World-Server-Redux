@@ -697,7 +697,7 @@
 	var/toxin_type = "carpotoxin"
 	var/toxin_amount = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/carpmeat/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/carpmeat/New()
 	. = ..()
 	reagents.add_reagent("protein", 3)
 	reagents.add_reagent(toxin_type, toxin_amount)

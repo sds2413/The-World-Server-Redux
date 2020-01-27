@@ -73,3 +73,110 @@
 	icon_state = "koi-swim"
 	icon_living = "koi-swim"
 	icon_dead = "koi-dead"
+
+/mob/living/simple_animal/fish/javelin
+	name = "javelin"
+	tt_desc = "S Cetusan minimalix"
+	icon_state = "javelin-swim"
+	icon_living = "javelin-swim"
+	icon_dead = "javelin-dead"
+
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat/sif
+
+/mob/living/simple_animal/fish/icebass
+	name = "glitter bass"
+	tt_desc = "X Micropterus notius crotux"
+	icon_state = "sifbass-swim"
+	icon_living = "sifbass-swim"
+	icon_dead = "sifbass-dead"
+
+	var/max_red = 150
+	var/min_red = 50
+
+	var/max_blue = 255
+	var/min_blue = 50
+
+	var/max_green = 150
+	var/min_green = 50
+
+	var/dorsal_color = "#FFFFFF"
+	var/belly_color = "#FFFFFF"
+
+	var/image/dorsal_image
+	var/image/belly_image
+
+/mob/living/simple_animal/fish/icebass/initialize()
+	..()
+	dorsal_color = rgb(rand(min_red,max_red), rand(min_green,max_green), rand(min_blue,max_blue))
+	belly_color = rgb(rand(min_red,max_red), rand(min_green,max_green), rand(min_blue,max_blue))
+	update_icon()
+
+/mob/living/simple_animal/fish/icebass/update_icon()
+	overlays.Cut()
+	..()
+	if(!dorsal_image)
+		dorsal_image = image(icon, "[icon_state]_mask-body")
+	if(!belly_image)
+		belly_image = image(icon, "[icon_state]_mask-belly")
+
+	dorsal_image.color = dorsal_color
+	belly_image.color = belly_color
+
+	overlays += dorsal_image
+	overlays += belly_image
+
+
+/mob/living/simple_animal/fish/rockfish
+	name = "rock-fish"
+	tt_desc = "S Tetraodontidae scopulix"
+	icon_state = "rockfish-swim"
+	icon_living = "rockfish-swim"
+	icon_dead = "rockfish-dead"
+
+	var/max_red = 255
+	var/min_red = 50
+
+	var/max_blue = 255
+	var/min_blue = 50
+
+	var/max_green = 255
+	var/min_green = 50
+
+	var/head_color = "#FFFFFF"
+
+	var/image/head_image
+
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat/sif
+
+/mob/living/simple_animal/fish/rockfish/initialize()
+	..()
+	head_color = rgb(rand(min_red,max_red), rand(min_green,max_green), rand(min_blue,max_blue))
+
+/mob/living/simple_animal/fish/rockfish/update_icon()
+	overlays.Cut()
+	..()
+	if(!head_image)
+		head_image = image(icon, "[icon_state]_mask")
+
+	head_image.color = head_color
+
+	overlays += head_image
+
+/mob/living/simple_animal/fish/solarfish
+	name = "sun-fin"
+	tt_desc = "S Exocoetidae solarin"
+	icon_state = "solarfin-swim"
+	icon_living = "solarfin-swim"
+	icon_dead = "solarfin-dead"
+
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat/sif
+
+/mob/living/simple_animal/fish/murkin
+	name = "murkin"
+	tt_desc = "S Perca lutux"
+
+	icon_state = "murkin-swim"
+	icon_living = "murkin-swim"
+	icon_dead = "murkin-dead"
+
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat/sif/murkfish

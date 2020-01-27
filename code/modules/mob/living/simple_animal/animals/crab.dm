@@ -89,24 +89,12 @@
 
 // Sif!
 
-/datum/category_item/catalogue/fauna/sif_crab
-	name = "Sivian Fauna - Shelf Crab"
-	desc = "Classification: S Ocypode glacian\
-	<br><br>\
-	A small crustacean sometimes considered a pest to Sivian fisheries, \
-	as the creatures often tend to ignore non-native fish species when feeding. This \
-	results in an unfortunate advantage for invasive species. \
-	<br>\
-	Otherwise, these animals are enjoyed as a reliable source of high-grade meat."
-	value = CATALOGUER_REWARD_EASY
 
-/mob/living/simple_mob/animal/passive/crab/sif
+
+/mob/living/simple_animal/crab/crab/sif
 	icon = 'icons/mob/fish.dmi'
-	tt_desc = "S Ocypode glacian"
 
-	catalogue_data = list(/datum/category_item/catalogue/fauna/sif_crab)
-
-/mob/living/simple_mob/animal/passive/crab/sif/Initialize()
+/mob/living/simple_animal/crab/sif/initialize()
 	..()
 	adjust_scale(rand(5,15) / 10)
 
