@@ -45,10 +45,14 @@ var/global/photo_count = 0
 
 	drop_sound = 'sound/items/drop/paper.ogg'
 
-	dont_save = 1
+
+	var/persistent_ref
+
+	unique_save_vars = list("persistent_ref", "sensational", "gruesome", "scandalous", "scary", "scribble", "cursed", "desc")
 
 /obj/item/weapon/photo/New()
 	id = photo_count++
+	persistent_ref = "[game_id]_[id]"
 
 /obj/item/weapon/photo/attack_self(mob/user as mob)
 	user.examinate(src)
@@ -158,6 +162,8 @@ var/global/photo_count = 0
 	var/icon_off = "camera_off"
 	var/size = 3
 	var/list/picture_planes = list()
+
+	unique_save_vars = list("pictures_left", "on", "size")
 
 /obj/item/device/camera/verb/change_size()
 	set name = "Set Photo Focus"
@@ -359,6 +365,70 @@ var/global/photo_count = 0
 	p.pixel_y = rand(-10, 10)
 	p.photo_size = size
 	return p
+
+/obj/item/weapon/photo/on_persistence_save()
+	if(!img)
+		return TRUE
+
+	if(!tiny)
+		update_icon()
+
+	var/img_path = "data/persistent/images/photo-[persistent_ref].sav"
+	var/tiny_path = "data/persistent/images/photo-[persistent_ref]_tiny.sav"
+
+	var/savefile/S = new /savefile(img_path)
+	var/savefile/F = new /savefile(tiny_path)
+
+	if(!fexists(img_path))
+		return FALSE
+	if(!fexists(tiny_path))
+		return FALSE
+
+	S["img"] << img
+	F["tiny"] << getFlatIcon(src)
+
+
+	return TRUE
+
+/obj/item/weapon/photo/on_persistence_load()
+	update_icon()
+
+/obj/item/weapon/photo/update_icon()
+	if(img && tiny)	// no need here.
+		return TRUE
+
+	if(!img && !tiny && persistent_ref)
+		var/img_path = "data/persistent/images/photo-[persistent_ref].sav"
+		var/tiny_path = "data/persistent/images/photo-[persistent_ref]_tiny.sav"
+
+		if(fexists(img_path))
+			var/savefile/S = new /savefile(img_path)
+			if(S)
+				S["img"] >> img
+
+		else
+			return FALSE
+
+		if(fexists(tiny_path))
+			var/savefile/F = new /savefile(tiny_path)
+			if(F)
+				F["tiny"] >> tiny
+
+		return TRUE
+
+	if(img && !tiny)	// if we're lacking the small one we can always make it again.
+		var/icon/small_img = icon(img)
+		var/icon/tiny_img = icon(img)
+		var/icon/ic = icon('icons/obj/items.dmi',"photo")
+		var/icon/pc = icon('icons/obj/bureaucracy.dmi', "photo")
+		small_img.Scale(8, 8)
+		tiny_img.Scale(4, 4)
+		ic.Blend(small_img,ICON_OVERLAY, 10, 13)
+		pc.Blend(tiny_img,ICON_OVERLAY, 12, 19)
+
+		icon = ic
+		tiny = pc
+		return
 
 /obj/item/device/camera/proc/printpicture(mob/user, obj/item/weapon/photo/p)
 	p.loc = user.loc
